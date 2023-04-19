@@ -17,7 +17,7 @@ typedef struct hashtableelem
 
 hashtableelem hash[13];
 
-void Initializetableelem(char* val,int key)
+void Insert(char* val,int key)
 {
     Ptrelem Current=hash[key].First,Parent=NULL;
     while(Current!=NULL)
@@ -27,7 +27,10 @@ void Initializetableelem(char* val,int key)
     }
     Current=(Ptrelem)malloc(sizeof(tableelem));
     Current->val=val;
-    Current->
+    Current->Prev=Parent;
+    Current->Next=NULL;
+    if(Parent==NULL){hash[key].First=Current;}
+    else{Parent->Next=Current;}
 }
 
 int hashfunction(char* str)
@@ -41,20 +44,37 @@ int hashfunction(char* str)
     return key;
 }
 
+void Printhashtablelem(int key)
+{
+    Ptrelem Current=hash[key].First;
+    while(Current!=NULL)
+    {
+        printf("%s ",Current->val);
+        Current=Current->Next;
+    }
+    printf("\n");
+    return;
+}
+
 int main()
 {
     int Test;
     scanf("%d",&Test);
+    char *storage[Test];
     for(int i=0;i<Test;i++)
     {
     int N;
     scanf("%d",&N);
-    char str[N+1];
-    scanf("%s",str);
-    str[N]='\0';
-    int key=hashfunction(str);
-    printf("%d\n",key);
-    Initializetableelem()
+    storage[i]=(char*)malloc(sizeof(char)*(N+1));
+    scanf("%s",storage[i]);
+    storage[i][N]='\0';
+    int key=hashfunction(storage[i]);
+    Insert(storage[i],key);
+    }
+    for(int i=0;i<13;i++)
+    {
+        printf("%d: ",i);
+        Printhashtablelem(i);
     }
     return 0;
 }
